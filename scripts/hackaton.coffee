@@ -51,6 +51,6 @@ module.exports = (robot) ->
       msg.reply "Das Hasztagen Ich weiss nicht"
 
   robot.hear /(.*)/, (msg) ->
-    if msg.message.room.toLowerCase() in ['kamerdyner'] && msg.message.user.name.toLowerCase() not in ['slackbot']
+    if msg.message.room.toLowerCase() in ['papuga'] && msg.message.user.name.toLowerCase() not in ['slackbot']
       child = exec "mplayer -really-quiet -user-agent \"Mozilla\" \"http://translate.google.com/translate_tts?ie=UTF-8&total=1&idx=1&textlen=64&client=tw-ob&q=#{msg.message.toString()}&tl=Pl-pl\"", (error, stdout, stderr) ->
         msg.send stdout
