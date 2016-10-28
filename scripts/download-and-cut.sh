@@ -55,7 +55,9 @@ function cutMP3 {
 #cutMP3 "$defaultLibraryDir/$m" "00:00:01" "00:00:04" "$defaultLibraryDir/outputTAK.mp3"
 
 # Sample usage:
-# ./additional.sh "https://www.youtube.com/watch?v=QuwvJw1mrWY" "BedzieDzialacNIE" "00:00:01" "00:00:04"
+# ./download-and-cut.sh "https://www.youtube.com/watch?v=QuwvJw1mrWY" "BedzieDzialacNIE" "00:00:01" "00:00:04"
+# or
+# ./download-and-cut.sh "https://www.youtube.com/watch?v=QuwvJw1mrWY" "BedzieDzialacNIE"
 
 if [ "$#" -lt 2 ] || [ "$#" -eq 3 ] || [ "$#" -gt 4 ]; then
     echo "You should provide 2 or 4 parameters"
