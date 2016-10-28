@@ -3,6 +3,8 @@
 defaultLibraryDir='/media/pen/kamerdyner'
 #Temp dir where downloading and encoding happens
 tmpDir='/media/pen/kamerdyner/tmp'
+#Log file:
+logFile="$tmpDir/YTlog.txt"
 
 # Additional functions for downloading and saving files from Youtube
 function checkIfPackageInstalled {
@@ -19,10 +21,10 @@ function downloadYoutube {
 	if [ ! -d "$tmpDir" ]; then
 		mkdir -p "$tmpDir"
 	fi
-	
+
     # usage: downloadYoutube "url" "tag"
     outputTemplate="%(title)s.%(ext)s"
-    #checkIfPackageInstalled "youtube-dl" ## &> /dev/null
+    #checkIfPackageInstalled "youtube-dl" ## &>> $logFile
     parameters="--extract-audio --audio-format mp3"
 
     outputFileName=`youtube-dl --get-filename $parameters -o "$outputTemplate" "$1"`
@@ -30,10 +32,12 @@ function downloadYoutube {
     firstOutputFileName="$outputName.mp3"
     realOutputFileName="$2.mp3"
 
-    pushd $tmpDir &> /dev/null
-      youtube-dl $parameters -o "$outputTemplate" "$1"  &> /dev/null
-      mv "$firstOutputFileName" "$realOutputFileName"  &> /dev/null
-    popd &> /dev/null
+    printf "\noutputFileName:$outputFileName\noutputName:$outputName\nfirstOutputFileName:$firstOutputFileName\nrealOutputFileName:$realOutputFileName\n\n" &>> $logFile
+
+    pushd $tmpDir &>> $logFile
+      youtube-dl $parameters -o "$outputTemplate" "$1"  &>> $logFile
+      mv "$firstOutputFileName" "$realOutputFileName"  &>> $logFile
+    popd &>> $logFile
 
     echo "$realOutputFileName"
 }
@@ -43,7 +47,7 @@ function cutMP3 {
 		rm "$tmpDir/ffmpeg.mp3"
  	fi
  	mv "$tmpDir/$1" "$tmpDir/ffmpeg.mp3"
- 	ffmpeg -y -i "$tmpDir/ffmpeg.mp3" -ss $2 -to $3 -c copy "$defaultLibraryDir/$1" &> /dev/null
+ 	ffmpeg -y -i "$tmpDir/ffmpeg.mp3" -ss $2 -to $3 -c copy "$defaultLibraryDir/$1" &>> $logFile
  	if [ -f "$tmpDir/ffmpeg.mp3" ]; then
  		rm "$tmpDir/ffmpeg.mp3"
  	fi
@@ -62,6 +66,8 @@ function cutMP3 {
 if [ "$#" -lt 2 ] || [ "$#" -eq 3 ] || [ "$#" -gt 4 ]; then
     echo "You should provide 2 or 4 parameters"
 else
+  # Cleaning log file
+  echo "" &> $logFile
 	fileName=`downloadYoutube "$1" "$2"`
 	if [ "$#" -eq 4 ]; then
 		cutMP3 "$fileName" "$3" "$4"
