@@ -28,6 +28,7 @@ function checkIfPackageInstalled {
 }
 
 function downloadYoutube {
+  nameToLog "downloadYoutube"
 	if [ ! -d "$tmpDir" ]; then
 		mkdir -p "$tmpDir"
 	fi
@@ -53,7 +54,7 @@ function downloadYoutube {
 }
 
 function cutMP3 {
-  printf "\n\nStart running cutMP3 function\n" &>> $logFile
+  nameToLog "cutMP3"
 	if [ -f "$tmpDir/ffmpeg.mp3" ]; then
 		rm "$tmpDir/ffmpeg.mp3"
  	fi
@@ -64,15 +65,40 @@ function cutMP3 {
  	fi
 }
 
+function sepToLog {
+  printf "\n==================\n" &>> $logFile
+}
+
+function messageToLog {
+  sepToLog
+  printf "$1" &>> $logFile
+  sepToLog
+}
+
+function nameToLog {
+  messageToLog "Start running $1 function"
+}
+
+function timeToLog {
+  now=$(date +"%T")
+  messageToLog $now
+}
+
+# Cleaning log file
+echo "" &> $logFile
+timeToLog
+echo "Starting executing script with following arguments $@" &>> $logFile
+
 if [ "$#" -lt 2 ] || [ "$#" -eq 3 ] || [ "$#" -gt 4 ]; then
     echo "You should provide 2 or 4 parameters"
+    echo "You should provide 2 or 4 parameters"  &>> $logFile
 else
-  # Cleaning log file
-  echo "" &> $logFile
-	fileName=`downloadYoutube "$1" "$2"`
-	if [ "$#" -eq 4 ]; then
-		cutMP3 "$fileName" "$3" "$4"
-	else
-		mv "$tmpDir/$fileName" "$defaultLibraryDir/$fileName"
-	fi
+  	fileName=`downloadYoutube "$1" "$2"`
+  	if [ "$#" -eq 4 ]; then
+  		cutMP3 "$fileName" "$3" "$4"
+  	else
+      echo mv "$tmpDir/$fileName" "$defaultLibraryDir/$fileName" &>> $logFile
+  		mv "$tmpDir/$fileName" "$defaultLibraryDir/$fileName"
+  	fi
+  timeToLog
 fi
