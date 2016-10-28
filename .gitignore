@@ -1,0 +1,9 @@
+node_modules
+.DS_Store*
+.editorconfig
+.hubot_history
+hubot_start.sh
+config/hubot.cfg
+*.mp3
+tmp
+log
