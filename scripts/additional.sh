@@ -20,14 +20,13 @@ function downloadYoutube {
     outputName=`echo "$outputFileName" | cut -d'.' -f1`
     realOutputFileName="$outputName.mp3"
 
-    pushd $2
+    pushd $2 >> /dev/null
       youtube-dl $parameters -o "$outputTemplate" "$1" >> /dev/null
-    popd
+    popd >> /dev/null
 
     echo "$realOutputFileName"
 }
 
 # For testing purposes
 m=$(downloadYoutube "https://www.youtube.com/watch?v=QuwvJw1mrWY" "/home/ddi")
-echo "You should have file in $m"
-#"https://www.youtube.com/watch?v=hS5CfP8n_js"
+echo "You should have file saved as \"$m\""
