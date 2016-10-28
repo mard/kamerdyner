@@ -1,4 +1,14 @@
 #!/bin/bash
+# Script used to download audio from Youtube video and extract specified part of it
+# Depends on all possible codecs that Youtube video files depend on including
+# Prerequisites:
+# sudo apt-get install libav-tools libavcodec-extra youtube-dl ffmpeg
+
+# Sample usage:
+# ./download-and-cut.sh "https://www.youtube.com/watch?v=QuwvJw1mrWY" "BedzieDzialacNIE" "00:00:01" "00:00:04"
+# or
+# ./download-and-cut.sh "https://www.youtube.com/watch?v=QuwvJw1mrWY" "BedzieDzialacNIE"
+
 #Directory where downloaded mp3 files are stored - kamerdyner's library
 defaultLibraryDir='/media/pen/kamerdyner'
 #Temp dir where downloading and encoding happens
@@ -43,6 +53,7 @@ function downloadYoutube {
 }
 
 function cutMP3 {
+  printf "\n\nStart running cutMP3 function\n" &>> $logFile
 	if [ -f "$tmpDir/ffmpeg.mp3" ]; then
 		rm "$tmpDir/ffmpeg.mp3"
  	fi
@@ -52,16 +63,6 @@ function cutMP3 {
  		rm "$tmpDir/ffmpeg.mp3"
  	fi
 }
-
-# For testing purposes
-#m=$(downloadYoutube "https://www.youtube.com/watch?v=QuwvJw1mrWY" "BedzieDzialacNIE")
-#echo "You should have file saved as \"$m\""
-#cutMP3 "$defaultLibraryDir/$m" "00:00:01" "00:00:04" "$defaultLibraryDir/outputTAK.mp3"
-
-# Sample usage:
-# ./download-and-cut.sh "https://www.youtube.com/watch?v=QuwvJw1mrWY" "BedzieDzialacNIE" "00:00:01" "00:00:04"
-# or
-# ./download-and-cut.sh "https://www.youtube.com/watch?v=QuwvJw1mrWY" "BedzieDzialacNIE"
 
 if [ "$#" -lt 2 ] || [ "$#" -eq 3 ] || [ "$#" -gt 4 ]; then
     echo "You should provide 2 or 4 parameters"
