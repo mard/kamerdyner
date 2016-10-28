@@ -34,7 +34,7 @@ function downloadYoutube {
 	fi
 
     # usage: downloadYoutube "url" "tag"
-    outputTemplate="%(title)s.%(ext)s"
+    outputTemplate="%(id)s.%(ext)s"
     #checkIfPackageInstalled "youtube-dl" ## &>> $logFile
     parameters="--extract-audio --audio-format mp3"
 
