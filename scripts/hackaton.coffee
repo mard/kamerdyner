@@ -14,6 +14,31 @@ module.exports = (robot) ->
       exec "mplayer -really-quiet #{file_name}", (error, stdout, stderr) ->
           msg.send stdout
 
+  robot.hear /^Franz remember all (https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)) as (\w+)/, (msg) ->
+    # group 1 - url
+    # group 4 - tag
+    if robot.brain.get("Franz.tags.#{msg.match[4].toString().toLowerCase()}")
+      msg.reply "Do diaska, das hasztagen już istnieje!"
+    else
+      tag = msg.match[4].toString().toLowerCase()
+      url = msg.match[1].toString()
+      file_name = "/media/pen/kamerdyner/#{tag}.mp3"
+      msg.reply "Ich arbeite..."
+      cmd = "/home/pi/hubot/scripts/download-and-cut.sh '#{url}' #{tag}"
+      exec cmd, (error, stdout, stderr) ->
+        robot.brain.set "Franz.tags.#{tag}", file_name
+        msg.reply "Sehr gut her general! #{tag}"
+
+  robot.hear /^Franz add (\w+)/, (msg) ->
+    # group 1 - tag
+    if robot.brain.get("Franz.tags.#{msg.match[1].toString().toLowerCase()}")
+      msg.reply "Do diaska, das hasztagen już istnieje!"
+    else
+      tag = msg.match[1].toString().toLowerCase()
+      file_name = "/media/pen/kamerdyner/#{tag}.mp3"
+      robot.brain.set "Franz.tags.#{tag}", file_name
+      msg.reply "Sehr gut her obersturmbannfuhrer! #{tag}"
+
   robot.hear /^Franz remember (https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)) as (\w+) between (([0-5]?\d):([0-5]\d)) and (([0-5]?\d):([0-5]\d))/, (msg) ->
     # group 1 - url
     # group 4 - tag
@@ -35,13 +60,6 @@ module.exports = (robot) ->
       exec cmd, (error, stdout, stderr) ->
           robot.brain.set "Franz.tags.#{tag}", file_name
           msg.reply "Sehr gut her obersturmbannfuhrer! #{tag}"
-
-  robot.hear /^Franz remember all (https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)) as (\w+)/, (msg) ->
-    if robot.brain.get("Franz.tags.#{msg.match[4].toString().toLowerCase()}")
-      msg.reply "Das hasztagen jest zajęty, karramba!"
-    else
-      robot.brain.set "Franz.tags.#{msg.match[4].toString().toLowerCase()}", msg.match[1].toString()
-      msg.reply "Sehr gut her obersturmbannfuhrer!"
 
   robot.hear /^Franz forget (\w+)/, (msg) ->
     file_name = robot.brain.get("Franz.tags.#{msg.match[1].toString().toLowerCase()}")
