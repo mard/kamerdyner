@@ -8,11 +8,14 @@ formatTime = (h, m, s) ->
   return "#{("00"+h).slice(-2)}:#{("00"+m).slice(-2)}:#{("00"+s).slice(-2)}"
 
 module.exports = (robot) ->
+  no_hasztag_msg = "Das Hasztagen Ich weiss nicht"
   robot.hear /#(\w+)/, (msg) ->
     file_name = robot.brain.get "Franz.tags.#{msg.match[1].toString().toLowerCase()}"
-    if file_name.length > 0
+    if (file_name != null && file_name != undefined && file_name.length > 0)
       exec "mplayer -really-quiet #{file_name}", (error, stdout, stderr) ->
           msg.send stdout
+    else
+      msg.reply no_hasztag_msg
 
   robot.hear /^Franz remember all (https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)) as (\w+)/, (msg) ->
     # group 1 - url
@@ -76,7 +79,7 @@ module.exports = (robot) ->
     if file_name
       msg.reply file_name
     else
-      msg.reply "Das Hasztagen Ich weiss nicht"
+      msg.reply no_hasztag_msg
 
   robot.hear /(.*)/, (msg) ->
     papugaRoomId = 'C2VHW8PNE'
