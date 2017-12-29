@@ -81,6 +81,16 @@ module.exports = (robot) ->
     else
       msg.reply no_hasztag_msg
 
+  robot.hear /^Franz list/, (msg) ->
+    search_string = "Franz.tags."
+    # ToDo: Instead of this ugly way of concatenating strings, change all_tags to an array and add elements to this array
+    all_tags = ""
+    brain_data = robot.brain.data._private
+    for element of brain_data
+      if element.toString().startsWith(search_string)
+        all_tags = all_tags + element.toString().replace(search_string,"") + ", "
+    msg.reply all_tags.substring(0, all_tags.length - 2)
+
   robot.hear /(.*)/, (msg) ->
     papugaRoomId = 'C2VHW8PNE'
     if msg.message.room.toUpperCase() in [papugaRoomId] && msg.message.user.name.toString().toLowerCase() not in ['slackbot']
