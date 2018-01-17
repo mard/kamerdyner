@@ -7,3 +7,5 @@ config/hubot.cfg
 *.mp3
 tmp
 log
+*.pyc
+.env
