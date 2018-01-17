@@ -1,6 +1,9 @@
 #!/bin/bash
 # hubot_forever.sh start | stop | restart
 
+#2017-03-07 MP Change default Hubot port from 8080 to 8081 - due to Squid
+export EXPRESS_PORT=8081
+
 ## Configuration
 
 BASEDIR=$(cd "$(dirname "$0")/.."; pwd)
