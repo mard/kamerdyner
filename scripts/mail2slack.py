@@ -12,7 +12,7 @@ import os
 
 load_dotenv(find_dotenv(), override=True)
 
-class vendor(object):
+class Vendor(object):
     def __init__(self, name, keywords, say):
         self.name = name
         self.keywords = keywords
@@ -21,7 +21,7 @@ class vendor(object):
     def toString(self):
         return 'name: "{:s}", keywords: {:s}, say: "{:s}"'.format(self.name, self.keywords, self.say)
 
-class foodVendors(object):
+class FoodVendors(object):
     def __init__(self):
         self.items = []
 
@@ -44,7 +44,7 @@ class foodVendors(object):
     def getItems(self):
         return self.items
 
-class kamerdyner:
+class Kamerdyner:
 
     lastUnreadCount = -1
 
@@ -106,12 +106,11 @@ class kamerdyner:
         except:
             print 'Something fucked :/', sys.exc_info()[1]
 
-# init vendors
-vendors = foodVendors()
-vendors.add(vendor('Smakosz', ['smakosz'], 'Bar smakosz'))
-vendors.add(vendor('Eat zone', ['eat zone', 'eatzone'], 'Eat zone'))
-vendors.add(vendor('Mr. Rollo', ['rollo'], 'Mister Rollo'))
-vendors.add(vendor('Sushi', ['sushi'], 'sushiii'))
+vendors = FoodVendors()
+vendors.add(Vendor('Smakosz', ['smakosz'], 'Bar smakosz'))
+vendors.add(Vendor('Eat zone', ['eat zone', 'eatzone'], 'Eat zone'))
+vendors.add(Vendor('Mr. Rollo', ['rollo'], 'Mister Rollo'))
+vendors.add(Vendor('Sushi', ['sushi'], 'sushiii'))
 
 class config:
     HACKATON_SLACK_WEBHOOK_URL = os.environ.get('HACKATON_SLACK_WEBHOOK_URL')
@@ -120,7 +119,7 @@ class config:
     IMAP_USER = os.environ.get('IMAP_USER')
     IMAP_PASSWORD = os.environ.get('IMAP_PASSWORD')
 
-kamerdyner = kamerdyner(config, vendors)
+kamerdyner = Kamerdyner(config, vendors)
 
 while True:
     kamerdyner.processEmails()
