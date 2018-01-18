@@ -6,7 +6,9 @@
 # 1. '.env' file with HACKATON_SLACK_WEBHOOK_URL variable set
 #     or just HACKATON_SLACK_WEBHOOK_URL variable in the scope of the script
 
-while read line; do export $line ; done < ./.env
+while IFS=$'\n\r' read line; do #IFS used to trim out CR or LF from the end of .env 
+        export $line; 
+done < .env
 
 text=$1
 
