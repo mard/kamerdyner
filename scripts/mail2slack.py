@@ -69,7 +69,7 @@ class Kamerdyner:
         userName = 'von Nogay'
         slackMessage = json.dumps({ 'text': '#omnomnom', 'username': userName })
         self.post(config.HACKATON_SLACK_WEBHOOK_URL, slackMessage)
-        time.sleep(5)
+        time.sleep(4)
         slackMessage = json.dumps({ 'text': say, 'username': userName })
         self.post(config.PAPUGA_SLACK_WEBHOOK_URL, slackMessage)
         print '\t\tPosting to Slack {}'.format(slackMessage)
@@ -111,6 +111,7 @@ vendors.add(Vendor('Smakosz', ['smakosz'], 'Bar smakosz'))
 vendors.add(Vendor('Eat zone', ['eat zone', 'eatzone'], 'Eat zone'))
 vendors.add(Vendor('Mr. Rollo', ['rollo'], 'Mister Rollo'))
 vendors.add(Vendor('Sushi', ['sushi'], 'sushiii'))
+vendors.add(Vendor('Foodie', ['foodie'], 'Foodie'))
 
 class config:
     HACKATON_SLACK_WEBHOOK_URL = os.environ.get('HACKATON_SLACK_WEBHOOK_URL')
