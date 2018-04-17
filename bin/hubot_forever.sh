@@ -8,8 +8,8 @@ export EXPRESS_PORT=8081
 
 BASEDIR=$(cd "$(dirname "$0")/.."; pwd)
 NODE_MODULES=$BASEDIR/node_modules
-LOG=$BASEDIR/log/hubot.log
-PID=$BASEDIR/tmp/pids/hubot.pid
+LOG=/var/log/hubot.log
+PID=/tmp/hubot.pid
 source $BASEDIR/config/hubot.cfg
 
 ## Ensure
