@@ -45,10 +45,10 @@ function downloadYoutube {
 
     printf "\noutputFileName:$outputFileName\noutputName:$outputName\nfirstOutputFileName:$firstOutputFileName\nrealOutputFileName:$realOutputFileName\n\n" &>> $logFile
 
-    pushd $tmpDir &>> $logFile
-      youtube-dl $parameters -o "$outputTemplate" "$1"  &>> $logFile
-      mv "$firstOutputFileName" "$realOutputFileName"  &>> $logFile
-    popd &>> $logFile
+    pushd $tmpDir >> $logFile 2>&1
+      youtube-dl $parameters -o "$outputTemplate" "$1" >> $logFile 2>&1
+      mv "$firstOutputFileName" "$realOutputFileName"  >> $logFile 2>&1
+    popd >> $logFile 2>&1
 
     echo "$realOutputFileName"
 }
@@ -59,7 +59,7 @@ function cutMP3 {
 		rm "$tmpDir/ffmpeg.mp3"
  	fi
  	mv "$tmpDir/$1" "$tmpDir/ffmpeg.mp3"
- 	ffmpeg -y -i "$tmpDir/ffmpeg.mp3" -ss $2 -to $3 -c copy "$defaultLibraryDir/$1" &>> $logFile
+ 	ffmpeg -y -i "$tmpDir/ffmpeg.mp3" -ss $2 -to $3 -c copy "$defaultLibraryDir/$1" >> $logFile 2>&1
  	if [ -f "$tmpDir/ffmpeg.mp3" ]; then
  		rm "$tmpDir/ffmpeg.mp3"
  	fi
@@ -91,13 +91,13 @@ echo "Starting executing script with following arguments $@" &>> $logFile
 
 if [ "$#" -lt 2 ] || [ "$#" -eq 3 ] || [ "$#" -gt 4 ]; then
     echo "You should provide 2 or 4 parameters"
-    echo "You should provide 2 or 4 parameters"  &>> $logFile
+    echo "You should provide 2 or 4 parameters" >> $logFile
 else
   	fileName=`downloadYoutube "$1" "$2"`
   	if [ "$#" -eq 4 ]; then
   		cutMP3 "$fileName" "$3" "$4"
   	else
-      echo mv "$tmpDir/$fileName" "$defaultLibraryDir/$fileName" &>> $logFile
+      echo mv "$tmpDir/$fileName" "$defaultLibraryDir/$fileName" >> $logFile 2>&1
   		mv "$tmpDir/$fileName" "$defaultLibraryDir/$fileName"
   	fi
   timeToLog
