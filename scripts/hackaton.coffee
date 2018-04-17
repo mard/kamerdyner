@@ -61,8 +61,11 @@ module.exports = (robot) ->
       msg.reply "Ich arbeite..."
       cmd = "/home/pi/hubot/scripts/download-and-cut.sh '#{url}' #{tag} #{formatTime(0,msg.match[6], msg.match[7])} #{formatTime(0,msg.match[9], msg.match[10])}"
       exec cmd, (error, stdout, stderr) ->
-          robot.brain.set "Franz.tags.#{tag}", file_name
-          msg.reply "Sehr gut her obersturmbannfuhrer! #{tag}"
+        if stderr?
+          msg.reply "Was für’n Scheiß! #{stderr} verflucht http://172.23.12.12/kamerdyner/tmp/YTlog.txt"
+          return
+        robot.brain.set "Franz.tags.#{tag}", file_name
+        msg.reply "Sehr gut her obersturmbannfuhrer! #{tag}"
 
   robot.hear /^Franz forget (\w+)/, (msg) ->
     file_name = robot.brain.get("Franz.tags.#{msg.match[1].toString().toLowerCase()}")

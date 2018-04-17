@@ -9,6 +9,9 @@
 # or
 # ./download-and-cut.sh "https://www.youtube.com/watch?v=QuwvJw1mrWY" "BedzieDzialacNIE"
 
+#Exit the script on firs error
+set -e
+
 #Directory where downloaded mp3 files are stored - kamerdyner's library
 defaultLibraryDir='/media/pen/kamerdyner'
 #Temp dir where downloading and encoding happens
@@ -47,6 +50,10 @@ function downloadYoutube {
 
     pushd $tmpDir >> $logFile 2>&1
       youtube-dl $parameters -o "$outputTemplate" "$1" >> $logFile 2>&1
+      if [ $? -gt 0 ]; then
+          echo >&2 "youtube-dl error!"
+          exit 1
+      fi
       mv "$firstOutputFileName" "$realOutputFileName"  >> $logFile 2>&1
     popd >> $logFile 2>&1
 
