@@ -19,6 +19,20 @@ tmpDir='/media/pen/kamerdyner/tmp'
 #Log file:
 logFile="$tmpDir/YTlog.txt"
 
+if [ ! -d "$defaultLibraryDir" ]; then
+  mkdir -p $defaultLibraryDir
+fi
+
+if [ ! -d "$tmpDir" ]; then
+  mkdir -p $tmpDir
+fi
+
+if [ -f "$logFile" ]; then
+  rm $logFile
+fi
+
+
+
 # Additional functions for downloading and saving files from Youtube
 function checkIfPackageInstalled {
   # usage: checkIfPackageInstalled PackageName
@@ -32,32 +46,27 @@ function checkIfPackageInstalled {
 
 function downloadYoutube {
   nameToLog "downloadYoutube"
-	if [ ! -d "$tmpDir" ]; then
-		mkdir -p "$tmpDir"
-	fi
 
-    # usage: downloadYoutube "url" "tag"
-    outputTemplate="%(id)s.%(ext)s"
-    #checkIfPackageInstalled "youtube-dl" ## &>> $logFile
-    parameters="--extract-audio --audio-format mp3"
+  # usage: downloadYoutube "url" "tag"
+  outputTemplate="%(id)s.%(ext)s"
+  #checkIfPackageInstalled "youtube-dl" ## &>> $logFile
+  parameters="--extract-audio --audio-format mp3"
 
-    outputFileName=`youtube-dl --get-filename $parameters -o "$outputTemplate" "$1"`
-    outputName=`echo "$outputFileName" | cut -d'.' -f1`
-    firstOutputFileName="$outputName.mp3"
-    realOutputFileName="$2.mp3"
+  outputFileName=`youtube-dl --get-filename $parameters -o "$outputTemplate" "$1"`
+  outputName=`echo "$outputFileName" | cut -d'.' -f1`
+  firstOutputFileName="$outputName.mp3"
+  realOutputFileName="$2.mp3"
 
-    printf "\noutputFileName:$outputFileName\noutputName:$outputName\nfirstOutputFileName:$firstOutputFileName\nrealOutputFileName:$realOutputFileName\n\n" &>> $logFile
+  pushd $tmpDir >> $logFile 2>&1
+    youtube-dl $parameters -o "$outputTemplate" "$1" >> $logFile 2>&1
+    if [ $? -gt 0 ]; then
+        cat $logFile >&2
+        exit 1
+    fi
+    mv "$firstOutputFileName" "$realOutputFileName"  >> $logFile 2>&1
+  popd >> $logFile 2>&1
 
-    pushd $tmpDir >> $logFile 2>&1
-      youtube-dl $parameters -o "$outputTemplate" "$1" >> $logFile 2>&1
-      if [ $? -gt 0 ]; then
-          echo >&2 "youtube-dl error!"
-          exit 1
-      fi
-      mv "$firstOutputFileName" "$realOutputFileName"  >> $logFile 2>&1
-    popd >> $logFile 2>&1
-
-    echo "$realOutputFileName"
+  echo "$realOutputFileName"
 }
 
 function cutMP3 {
@@ -83,7 +92,7 @@ function messageToLog {
 }
 
 function nameToLog {
-  messageToLog "Start running $1 function"
+  messageToLog "Running $1"
 }
 
 function timeToLog {
@@ -94,18 +103,18 @@ function timeToLog {
 # Cleaning log file
 echo "" &> $logFile
 timeToLog
-echo "Starting executing script with following arguments $@" &>> $logFile
+echo "Arguments provided $@" &>> $logFile
 
 if [ "$#" -lt 2 ] || [ "$#" -eq 3 ] || [ "$#" -gt 4 ]; then
-    echo "You should provide 2 or 4 parameters"
-    echo "You should provide 2 or 4 parameters" >> $logFile
+  echo "You should provide 2 or 4 parameters"
+  echo "You should provide 2 or 4 parameters" >> $logFile
 else
-  	fileName=`downloadYoutube "$1" "$2"`
-  	if [ "$#" -eq 4 ]; then
-  		cutMP3 "$fileName" "$3" "$4"
-  	else
-      echo mv "$tmpDir/$fileName" "$defaultLibraryDir/$fileName" >> $logFile 2>&1
-  		mv "$tmpDir/$fileName" "$defaultLibraryDir/$fileName"
-  	fi
+  fileName=`downloadYoutube "$1" "$2"`
+  if [ "$#" -eq 4 ]; then
+    cutMP3 "$fileName" "$3" "$4"
+  else
+    echo mv "$tmpDir/$fileName" "$defaultLibraryDir/$fileName" >> $logFile 2>&1
+    mv "$tmpDir/$fileName" "$defaultLibraryDir/$fileName"
+  fi
   timeToLog
 fi
