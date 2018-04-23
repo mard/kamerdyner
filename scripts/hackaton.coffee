@@ -9,6 +9,21 @@ fs = require('fs')
 formatTime = (h, m, s) ->
   return "#{("00"+h).slice(-2)}:#{("00"+m).slice(-2)}:#{("00"+s).slice(-2)}"
 
+messageTagLink = (tag) ->
+  attachments = [
+    (
+      title: "#{tag}.mp3"
+      title_link: "http://172.23.12.12/kamerdyner/#{tag}.mp3"
+    )
+  ]
+  message = ( 
+    text: "Bitte ein #{tag}"
+    attachments: attachments
+    username: "kamerdyner"
+    as_user: true
+  )
+  return message
+
 module.exports = (robot) ->
   no_hasztag_msg = "Das Hasztagen Ich weiss nicht"
   robot.hear /#(\w+)/, (msg) ->
@@ -33,6 +48,14 @@ module.exports = (robot) ->
     if res?
       res.reply "#{err}\n#{err.stack}"
 
+  robot.hear /^Franz sing[en]? (\w+)/, (msg) ->
+    # group 1 - tag
+    tag = "#{msg.match[1].toString().toLowerCase()}"
+    if robot.brain.get("Franz.tags.#{tag}")
+      msg.send messageTagLink tag
+    else
+      msg.reply no_hasztag_msg
+
   robot.hear /^Franz (hilfe|help|\?)$/, (msg) ->
     help = "List of all commands:\n" +
      "#tagname - plays file associated with tagname\n" +
@@ -42,6 +65,7 @@ module.exports = (robot) ->
      "Franz forget franztag - removes tag 'franztag'\n" +
      "Franz check franztag - checks if tag 'franztag' exists\n" +
      "Franz list - lists all available tags\n" +
+     "Franz sing|singen franztag - responds with a link to mp3 file associated with the tag to listen it via browser (works only if clopduino and client are in the same network)\n" +
      "Franz logs|log - shows log of the last processed tag (for troubleshooting)\n" +
      "Franz hilfe|help|? - shows this help\n"
     msg.reply help
