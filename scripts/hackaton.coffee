@@ -37,7 +37,7 @@ module.exports = (robot) ->
     help = "List of all commands:\n" +
      "#tagname - plays file associated with tagname\n" +
      "Franz remember all https://www.youtube.com/watch?v=I583TE-3Grw as franztag - saves whole audio track from the provided youtube video under tag 'franztag'\n" +
-     "Franz remember all https://www.youtube.com/watch?v=I583TE-3Grw between 00:10 and 00:15 as franztag - saves audio track between 10th and 15th seconds under tag 'franztag'\n" +
+     "Franz remember https://www.youtube.com/watch?v=I583TE-3Grw between 00:10 and 00:15 as franztag - saves audio track between 10th and 15th seconds under tag 'franztag'\n" +
      "Franz add franztag - adds tag 'franztag', expecting that the corresponding file alteady exists at the desired path (for adding manually edited files)\n" +
      "Franz forget franztag - removes tag 'franztag'\n" +
      "Franz check franztag - checks if tag 'franztag' exists\n" +
