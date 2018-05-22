@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import sys
 import imaplib
@@ -29,7 +30,8 @@ class FoodVendors(object):
 
     def searchKeywords(self, subject, keywords):
         for index, item in enumerate(keywords):
-            if subject.lower().find(item) > -1:
+            decoded_subject = subject.lower().decode('utf-8');
+            if decoded_subject.find(item.lower().decode('utf-8')) > -1:
                 return True
         return False
 
@@ -114,6 +116,7 @@ vendors.add(Vendor('Eat zone', ['eat zone', 'eatzone'], 'Eat zone'))
 vendors.add(Vendor('Mr. Rollo', ['rollo'], 'Mister Rollo'))
 vendors.add(Vendor('Sushi', ['sushi'], 'sushiii'))
 vendors.add(Vendor('Foodie', ['foodie'], 'Foodie'))
+vendors.add(Vendor('Ślimak', ['slimak', 'Ślimak', 'ślimak'], 'Pan Ślimak'))
 
 class config:
     HACKATON_SLACK_WEBHOOK_URL = os.environ.get('HACKATON_SLACK_WEBHOOK_URL')
@@ -121,6 +124,7 @@ class config:
     IMAP_SERVER = os.environ.get('IMAP_SERVER')
     IMAP_USER = os.environ.get('IMAP_USER')
     IMAP_PASSWORD = os.environ.get('IMAP_PASSWORD')
+
 
 kamerdyner = Kamerdyner(config, vendors)
 
