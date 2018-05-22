@@ -172,5 +172,5 @@ module.exports = (robot) ->
   robot.hear /(.*)/, (msg) ->
     papugaRoomId = 'C2VHW8PNE'
     if msg.message.room.toUpperCase() in [papugaRoomId] && msg.message.user.name.toString().toLowerCase() not in ['slackbot']
-      child = exec "mplayer -speed 1.4 -really-quiet -user-agent \"Mozilla\" \"http://translate.google.com/translate_tts?ie=UTF-8&total=1&idx=1&textlen=64&client=tw-ob&q=#{msg.message.toString()}&tl=Pl-pl\"", (error, stdout, stderr) ->
+      child = exec "mplayer -speed 1.3 -really-quiet -user-agent \"Mozilla\" \"http://translate.google.com/translate_tts?ie=UTF-8&total=1&idx=1&textlen=64&client=tw-ob&q=#{msg.message.toString()}&tl=Pl-pl\"", (error, stdout, stderr) ->
         msg.send stdout
