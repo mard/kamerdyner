@@ -117,7 +117,7 @@ vendors.add(Vendor('Mr. Rollo', ['rollo'], 'Mister Rollo'))
 vendors.add(Vendor('Sushi', ['sushi'], 'sushiii'))
 vendors.add(Vendor('Foodie', ['foodie'], 'Foodie'))
 vendors.add(Vendor('Ślimak', ['slimak', 'Ślimak', 'ślimak'], 'Pan Ślimak'))
-vendors.add(Vendor('Jesz to', ['Jeż.to', 'Jeż', 'jeż.to', 'jeż'], 'Jesz to'))
+vendors.add(Vendor('Jesz to', ['Jeż.to', 'Jeż', 'jeż.to', 'jeż', 'Jez.to', 'Jez', 'jez.to', 'jez'], 'Jesz to'))
 vendors.add(Vendor('Borówka', ['BORÓWKA', 'BOROWKA', 'borówka', 'borowka'], 'Pan Borówka'))
 
 class config:
