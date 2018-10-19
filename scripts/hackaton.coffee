@@ -5,6 +5,7 @@ util = require('util')
 exec = require('child_process').exec
 _ = require('underscore')
 fs = require('fs')
+os = require('os');
 
 formatTime = (h, m, s) ->
   return "#{("00"+h).slice(-2)}:#{("00"+m).slice(-2)}:#{("00"+s).slice(-2)}"
@@ -55,6 +56,15 @@ module.exports = (robot) ->
       msg.send messageTagLink tag
     else
       msg.reply no_hasztag_msg
+
+  robot.hear /^Franz (ip|adres|address|addresses|\?)$/, (msg) ->
+    adresses = "Network interfaces:\n"
+    ifaces = os.networkInterfaces();
+    Object.keys(ifaces).forEach (ifname) ->
+      ifaces[ifname].forEach (iface) ->
+        if !iface.internal
+          adresses += "#{ifname} #{iface.family} - Address: #{iface.address} MAC: #{iface.mac}\n"
+    msg.reply adresses
 
   robot.hear /^Franz (hilfe|help|\?)$/, (msg) ->
     help = "List of all commands:\n" +
