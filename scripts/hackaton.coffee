@@ -10,11 +10,20 @@ os = require('os');
 formatTime = (h, m, s) ->
   return "#{("00"+h).slice(-2)}:#{("00"+m).slice(-2)}:#{("00"+s).slice(-2)}"
 
+getAddr = ->
+  result = null
+  ifaces = os.networkInterfaces()
+  Object.keys(ifaces).forEach (ifname) ->
+    ifaces[ifname].forEach (iface) ->
+      if iface.family == 'IPv4' and iface.internal == false
+        result = iface.address
+  result
+
 messageTagLink = (tag) ->
   attachments = [
     (
       title: "#{tag}.mp3"
-      title_link: "http://172.23.12.12/kamerdyner/#{tag}.mp3"
+      title_link: "http://#{getAddr()}/kamerdyner/#{tag}.mp3"
     )
   ]
   message = ( 
