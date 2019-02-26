@@ -119,6 +119,9 @@ vendors.add(Vendor('Foodie', ['foodie'], 'Foodie'))
 vendors.add(Vendor('Ślimak', ['slimak', 'Ślimak', 'ślimak'], 'Pan Ślimak'))
 vendors.add(Vendor('Jesz to', ['Jeż.to', 'Jeż', 'jeż.to', 'jeż', 'Jez.to', 'Jez', 'jez.to', 'jez'], 'Jesz to'))
 vendors.add(Vendor('Borówka', ['BORÓWKA', 'BOROWKA', 'borówka', 'borowka'], 'Pan Borówka'))
+vendors.add(Vendor('Pajda', ['Pajda', 'pajda',], 'Pajda'))
+vendors.add(Vendor('Rajskie Smaki', ['Rajskie Smaki', 'Rajskie smaki', 'rajskie smaki', 'ajskie Smaki'], 'Rajskie Smaki'))
+vendors.add(Vendor('Green2go', ['Green2go', 'green2go'], 'Grin tu goł'))
 
 class config:
     HACKATON_SLACK_WEBHOOK_URL = os.environ.get('HACKATON_SLACK_WEBHOOK_URL')
