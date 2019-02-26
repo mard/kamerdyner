@@ -86,6 +86,7 @@ module.exports = (robot) ->
      "Franz list - lists all available tags\n" +
      "Franz sing|singen franztag - responds with a link to mp3 file associated with the tag to listen it via browser (works only if clopduino and client are in the same network)\n" +
      "Franz logs|log - shows log of the last processed tag (for troubleshooting)\n" +
+     "Franz ip|adres|address|addresses - shows list of all network intefaces\n" +
      "Franz hilfe|help|? - shows this help\n"
     msg.reply help
 
