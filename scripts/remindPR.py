@@ -1,13 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import json, requests
-from pprint import PrettyPrinter
+import json
 import os
 from dotenv import load_dotenv, find_dotenv
+import requests
 from requests.auth import HTTPBasicAuth
 
-urlList = ["https://dev.azure.com/kantarware/kt-rio/_apis/git/repositories/KT-RIO-Storyteller-UI/pullrequests?api-version=5.0", "https://dev.azure.com/kantarware/kt-rio/_apis/git/repositories/KT-RIO-Viz-Service/pullrequests?api-version=5.0"]
+urlList = [
+    "https://dev.azure.com/kantarware/kt-rio/_apis/git/repositories/KT-RIO-Storyteller-UI/pullrequests?api-version=5.0",
+    "https://dev.azure.com/kantarware/kt-rio/_apis/git/repositories/KT-RIO-Viz-Service/pullrequests?api-version=5.0"
+    ]
+
 load_dotenv(find_dotenv(), override=True)
 
 class config:
