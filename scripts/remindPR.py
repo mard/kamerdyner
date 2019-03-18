@@ -15,8 +15,9 @@ urlList = [
 load_dotenv(find_dotenv(), override=True)
 
 class config:
-    # HACKATON_SLACK_WEBHOOK_URL = os.environ.get('HACKATON_SLACK_WEBHOOK_URL')
+    HACKATON_SLACK_WEBHOOK_URL = os.environ.get('HACKATON_SLACK_WEBHOOK_URL')
     PAPUGA_SLACK_WEBHOOK_URL = os.getenv('PAPUGA_SLACK_WEBHOOK_URL')
+    PRIVATE_SLACK_WEBHOOK_URL = os.getenv('PRIVATE_SLACK_WEBHOOK_URL')
     AZURE_USER_NAME = os.getenv('AZURE_USER_NAME')
     AZURE_PERSONAL_ACCESS_TOKEN = os.getenv('AZURE_PERSONAL_ACCESS_TOKEN')
 
@@ -34,11 +35,11 @@ class PullRequest(object):
         self.sourceRefName = sourceRefName
 
     def toString(self):
-        return ('PR id: ' + '<https://kantarware.visualstudio.com/KT-RIO/_git/KT-RIO-Storyteller-UI/pullrequest/' + self.pullRequestId + '?_a=overview|' + self.pullRequestId + '>' + '\n' + 
-            'Serwis: ' + self.service + '\n' + 
-            'Twórca: ' + self.owner + '\n' + 
-            'Data założenia: ' + self.createdDate + '\n' + 
-            'Tytuł: ' + self.title + '\n' + 
+        return ('PR id: ' + '<https://kantarware.visualstudio.com/KT-RIO/_git/KT-RIO-Storyteller-UI/pullrequest/' + self.pullRequestId + '?_a=overview|' + self.pullRequestId + '>' + '\n' +
+            'Serwis: ' + self.service + '\n' +
+            'Twórca: ' + self.owner + '\n' +
+            'Data założenia: ' + self.createdDate + '\n' +
+            'Tytuł: ' + self.title + '\n' +
             'Nazwa Branch\'a: ' + self.sourceRefName) + '\n'
 
     def toStringShort(self):
@@ -78,18 +79,18 @@ def getPullRequestList():
             listPR.add(pr)
     return listPR
 
-def printPullRequests(listPR):    
+def printPullRequests(listPR):
     for pr in listPR.items:
         print pr.toString()
 
-def messagePullRequests(listPR):   
-    message = '' 
+def messagePullRequests(listPR):
+    message = ''
     for pr in listPR.items:
         message += pr.toString() + '\n'
     return message
 
-def messageShortPullRequests(listPR):   
-    message = '' 
+def messageShortPullRequests(listPR):
+    message = ''
     for pr in listPR.items:
         message += pr.toStringShort() + '\n'
     return message
@@ -116,7 +117,7 @@ class Kamerdyner:
         # self.post(config.HACKATON_SLACK_WEBHOOK_URL, slackMessage)
         # time.sleep(4)
         slackMessage = json.dumps({ 'text': say, 'username': userName })
-        self.post(config.PAPUGA_SLACK_WEBHOOK_URL, slackMessage)
+        self.post(config.PRIVATE_SLACK_WEBHOOK_URL, slackMessage)
         print '\t\tPosting to Slack {}'.format(slackMessage)
 
 pullRequestList = getPullRequestList()
