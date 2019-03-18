@@ -125,6 +125,6 @@ pullRequestList = getPullRequestList()
 # printPullRequests(pullRequestList)
 #messagePullRequests(getPullRequestList())
 kamerdyner = Kamerdyner(config)
-kamerdyner.postToSlack(messageShortPullRequests(pullRequestList))
+#kamerdyner.postToSlack(messageShortPullRequests(pullRequestList))
 
 print messageShortPullRequests(pullRequestList)
