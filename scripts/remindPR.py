@@ -35,7 +35,7 @@ class PullRequest(object):
         self.sourceRefName = sourceRefName
 
     def toString(self):
-        return ('PR id: ' + '<https://kantarware.visualstudio.com/KT-RIO/_git/KT-RIO-Storyteller-UI/pullrequest/' + self.pullRequestId + '?_a=overview|' + self.pullRequestId + '>' + '\n' +
+        return ('PR id: ' + '<https://kantarware.visualstudio.com/KT-RIO/_git/'+ self.service +'/pullrequest/' + self.pullRequestId + '?_a=overview|' + self.pullRequestId + '>' + '\n' +
             'Serwis: ' + self.service + '\n' +
             'Twórca: ' + self.owner + '\n' +
             'Data założenia: ' + self.createdDate + '\n' +
@@ -43,7 +43,7 @@ class PullRequest(object):
             'Nazwa Branch\'a: ' + self.sourceRefName) + '\n'
 
     def toStringShort(self):
-        return ('Link do PR: ' + '<https://kantarware.visualstudio.com/KT-RIO/_git/KT-RIO-Storyteller-UI/pullrequest/' + self.pullRequestId + '?_a=overview|' + self.pullRequestId + '>' +
+        return ('Link do PR: ' + '<https://kantarware.visualstudio.com/KT-RIO/_git/'+ self.service +'/pullrequest/' + self.pullRequestId + '?_a=overview|' + self.pullRequestId + '>' +
             ' Serwis: ' + self.service) +'\n'
 
 class PullRequests(object):
