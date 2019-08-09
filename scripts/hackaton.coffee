@@ -26,7 +26,7 @@ messageTagLink = (tag) ->
       title_link: "http://#{getAddr()}/kamerdyner/#{tag}.mp3"
     )
   ]
-  message = ( 
+  message = (
     text: "Bitte ein #{tag}"
     attachments: attachments
     username: "kamerdyner"
@@ -38,13 +38,13 @@ module.exports = (robot) ->
   no_hasztag_msg = "Das Hasztagen Ich weiss nicht"
   robot.hear /#(\w+)/, (msg) ->
     file_name = robot.brain.get "Franz.tags.#{msg.match[1].toString().toLowerCase()}"
-    
+
     if (file_name != null && file_name != undefined && file_name.length > 0)
       try
         file_exists = fs.statSync file_name
       catch
         return msg.reply "File for tag '#{msg.match[1].toString().toLowerCase()}' does not exist: '#{file_name}'"
-      
+
       exec "mplayer -really-quiet #{file_name}", (error, stdout, stderr) ->
           if (stderr?) && (error?) && (stderr)
             msg.reply "Was für’n Scheiß! #{stderr}"
