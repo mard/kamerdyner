@@ -10,3 +10,4 @@ log
 *.pyc
 .env
 bak/**
+*.swp
