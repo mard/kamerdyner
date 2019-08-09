@@ -100,7 +100,7 @@ module.exports = (robot) ->
       url = msg.match[1].toString()
       file_name = "/media/pen/kamerdyner/#{tag}.mp3"
       msg.reply "Ich arbeite..."
-      cmd = "/home/pi/hubot/scripts/download-and-cut.sh '#{url}' #{tag}"
+      cmd = "#{process.cwd()}/scripts/download-and-cut.sh '#{url}' #{tag}"
       exec cmd, (error, stdout, stderr) ->
         if (stderr?) && (error?) && (stderr)
           msg.reply "Was für’n Scheiß! #{stderr}"
@@ -136,7 +136,7 @@ module.exports = (robot) ->
       file_name = "/media/pen/kamerdyner/#{tag}.mp3"
       msg.reply "Ich arbeite..."
 
-      cmd = "/home/pi/hubot/scripts/download-and-cut.sh '#{url}' #{tag} #{formatTime(0,msg.match[6], msg.match[7])} #{formatTime(0,msg.match[9], msg.match[10])}"
+      cmd = "#{process.cwd()}/scripts/download-and-cut.sh '#{url}' #{tag} #{formatTime(0,msg.match[6], msg.match[7])} #{formatTime(0,msg.match[9], msg.match[10])}"
       exec cmd, (error, stdout, stderr) ->
         if (stderr?) && (error?) && (stderr)
           msg.reply "Was für’n Scheiß! #{stderr}"
