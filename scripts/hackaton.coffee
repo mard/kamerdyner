@@ -34,6 +34,14 @@ messageTagLink = (tag) ->
   )
   return message
 
+run = (c, msg) ->
+  exec c, (error, stdout, stderr) ->
+    if (stderr)
+      msg.reply "Was für’n Scheiß! #{stderr}"
+
+setVolume = (val, msg) ->
+  run "amixer -q set PCM #{val}", msg
+
 module.exports = (robot) ->
   no_hasztag_msg = "Das Hasztagen Ich weiss nicht"
   robot.hear /#(\w+)/, (msg) ->
@@ -58,6 +66,20 @@ module.exports = (robot) ->
     if res?
       res.reply "#{err}\n#{err.stack}"
 
+  robot.hear /^Franz (vol|volume|lautstarke) (\w+\%?)/, (msg) ->
+    val = "#{msg.match[2].toString().toLowerCase()}"
+    if val.match /^(max|maximum|100\%)$/
+      msg.reply "Oh ja, die maximale Lautstärke einstellen."
+      setVolume "100%", msg
+    else if val.match /^(min|minimum|mute|off|0\%)$/
+      msg.reply "Jetzt brauchen wir Ruhe."
+      setVolume "0%", msg
+    else if val.match /^[0-9]+\%$/
+      msg.reply "Lautstärke auf #{val} einstellen."
+      setVolume val, msg
+    else
+      msg.reply "Nicht verstanden. Wie brauchst du deine Lautstärke?"
+
   robot.hear /^Franz (sing|singen) (\w+)/, (msg) ->
     # group 2 - tag
     tag = "#{msg.match[2].toString().toLowerCase()}"
@@ -78,6 +100,7 @@ module.exports = (robot) ->
   robot.hear /^Franz (hilfe|help|\?)$/, (msg) ->
     help = "List of all commands:\n" +
      "#tagname - plays file associated with tagname\n" +
+     "Franz vol|volume|lautstarke X% - set playback volume in 0%-100% range (aliases: max|maximum|min|minimum|mute|off)"
      "Franz remember all https://www.youtube.com/watch?v=I583TE-3Grw as franztag - saves whole audio track from the provided youtube video under tag 'franztag'\n" +
      "Franz remember https://www.youtube.com/watch?v=I583TE-3Grw as franztag between 00:10 and 00:15 - saves audio track between 10th and 15th seconds under tag 'franztag'\n" +
      "Franz add franztag - adds tag 'franztag', expecting that the corresponding file alteady exists at the desired path (for adding manually edited files)\n" +
