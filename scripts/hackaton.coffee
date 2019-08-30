@@ -100,7 +100,7 @@ module.exports = (robot) ->
   robot.hear /^Franz (hilfe|help|\?)$/, (msg) ->
     help = "List of all commands:\n" +
      "#tagname - plays file associated with tagname\n" +
-     "Franz vol|volume|lautstarke X% - set playback volume in 0%-100% range (aliases: max|maximum|min|minimum|mute|off)"
+     "Franz vol|volume|lautstarke X% - set playback volume in 0%-100% range (aliases: max|maximum|min|minimum|mute|off)\n" +
      "Franz remember all https://www.youtube.com/watch?v=I583TE-3Grw as franztag - saves whole audio track from the provided youtube video under tag 'franztag'\n" +
      "Franz remember https://www.youtube.com/watch?v=I583TE-3Grw as franztag between 00:10 and 00:15 - saves audio track between 10th and 15th seconds under tag 'franztag'\n" +
      "Franz add franztag - adds tag 'franztag', expecting that the corresponding file alteady exists at the desired path (for adding manually edited files)\n" +
