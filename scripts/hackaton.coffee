@@ -40,7 +40,7 @@ run = (c, msg) ->
       msg.reply "Was für’n Scheiß! #{stderr}"
 
 setVolume = (val, msg) ->
-  run "amixer -q set PCM #{val}%", msg
+  run "amixer -qM set PCM #{val}%", msg
 
 module.exports = (robot) ->
   no_hasztag_msg = "Das Hasztagen Ich weiss nicht"
