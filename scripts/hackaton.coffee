@@ -40,7 +40,7 @@ run = (c, msg) ->
       msg.reply "Was für’n Scheiß! #{stderr}"
 
 setVolume = (val, msg) ->
-  run "amixer -q set PCM #{val}", msg
+  run "amixer -q set PCM #{val}%", msg
 
 module.exports = (robot) ->
   no_hasztag_msg = "Das Hasztagen Ich weiss nicht"
@@ -68,15 +68,19 @@ module.exports = (robot) ->
 
   robot.hear /^Franz (vol|volume|lautstarke) (\w+\%?)/, (msg) ->
     val = "#{msg.match[2].toString().toLowerCase()}"
-    if val.match /^(max|maximum|100\%)$/
+    if val.match /^(max|maximum|100\%?)$/
       msg.reply "Oh ja, die maximale Lautstärke einstellen."
-      setVolume "100%", msg
-    else if val.match /^(min|minimum|mute|off|0\%)$/
+      setVolume 100, msg
+    else if val.match /^(min|minimum|mute|off|0\%?)$/
       msg.reply "Jetzt brauchen wir Ruhe."
-      setVolume "0%", msg
-    else if val.match /^[0-9]+\%$/
-      msg.reply "Lautstärke auf #{val} einstellen."
-      setVolume val, msg
+      setVolume 0, msg
+    else if val.match /^[0-9]+\%?$/
+      n = val.replace(/\D/g, '') | 0
+      if n <= 100
+        msg.reply "Lautstärke auf #{n}% einstellen."
+        setVolume n, msg
+      else
+        msg.reply "Ungültiger Volumenwert."
     else
       msg.reply "Nicht verstanden. Wie brauchst du deine Lautstärke?"
 
