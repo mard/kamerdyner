@@ -26,7 +26,7 @@ messageTagLink = (tag) ->
       title_link: "http://#{getAddr()}/kamerdyner/#{tag}.mp3"
     )
   ]
-  message = ( 
+  message = (
     text: "Bitte ein #{tag}"
     attachments: attachments
     username: "kamerdyner"
@@ -34,17 +34,25 @@ messageTagLink = (tag) ->
   )
   return message
 
+run = (c, msg) ->
+  exec c, (error, stdout, stderr) ->
+    if (stderr)
+      msg.reply "Was für’n Scheiß! #{stderr}"
+
+setVolume = (val, msg) ->
+  run "amixer -qM set PCM #{val}%", msg
+
 module.exports = (robot) ->
   no_hasztag_msg = "Das Hasztagen Ich weiss nicht"
   robot.hear /#(\w+)/, (msg) ->
     file_name = robot.brain.get "Franz.tags.#{msg.match[1].toString().toLowerCase()}"
-    
+
     if (file_name != null && file_name != undefined && file_name.length > 0)
       try
         file_exists = fs.statSync file_name
       catch
         return msg.reply "File for tag '#{msg.match[1].toString().toLowerCase()}' does not exist: '#{file_name}'"
-      
+
       exec "mplayer -really-quiet #{file_name}", (error, stdout, stderr) ->
           if (stderr?) && (error?) && (stderr)
             msg.reply "Was für’n Scheiß! #{stderr}"
@@ -57,6 +65,24 @@ module.exports = (robot) ->
     robot.logger.error "#{err}\n#{err.stack}"
     if res?
       res.reply "#{err}\n#{err.stack}"
+
+  robot.hear /^Franz (vol|volume|lautstarke) (\w+\%?)/, (msg) ->
+    val = "#{msg.match[2].toString().toLowerCase()}"
+    if val.match /^(max|maximum|100\%?)$/
+      msg.reply "Oh ja, die maximale Lautstärke einstellen."
+      setVolume 100, msg
+    else if val.match /^(min|minimum|mute|off|0\%?)$/
+      msg.reply "Jetzt brauchen wir Ruhe."
+      setVolume 0, msg
+    else if val.match /^[0-9]+\%?$/
+      n = val.replace(/\D/g, '') | 0
+      if n <= 100
+        msg.reply "Lautstärke auf #{n}% einstellen."
+        setVolume n, msg
+      else
+        msg.reply "Ungültiger Volumenwert."
+    else
+      msg.reply "Nicht verstanden. Wie brauchst du deine Lautstärke?"
 
   robot.hear /^Franz (sing|singen) (\w+)/, (msg) ->
     # group 2 - tag
@@ -78,6 +104,7 @@ module.exports = (robot) ->
   robot.hear /^Franz (hilfe|help|\?)$/, (msg) ->
     help = "List of all commands:\n" +
      "#tagname - plays file associated with tagname\n" +
+     "Franz vol|volume|lautstarke X% - set playback volume in 0%-100% range (aliases: max|maximum|min|minimum|mute|off)\n" +
      "Franz remember all https://www.youtube.com/watch?v=I583TE-3Grw as franztag - saves whole audio track from the provided youtube video under tag 'franztag'\n" +
      "Franz remember https://www.youtube.com/watch?v=I583TE-3Grw as franztag between 00:10 and 00:15 - saves audio track between 10th and 15th seconds under tag 'franztag'\n" +
      "Franz add franztag - adds tag 'franztag', expecting that the corresponding file alteady exists at the desired path (for adding manually edited files)\n" +
@@ -100,7 +127,7 @@ module.exports = (robot) ->
       url = msg.match[1].toString()
       file_name = "/media/pen/kamerdyner/#{tag}.mp3"
       msg.reply "Ich arbeite..."
-      cmd = "/home/pi/hubot/scripts/download-and-cut.sh '#{url}' #{tag}"
+      cmd = "#{process.cwd()}/scripts/download-and-cut.sh '#{url}' #{tag}"
       exec cmd, (error, stdout, stderr) ->
         if (stderr?) && (error?) && (stderr)
           msg.reply "Was für’n Scheiß! #{stderr}"
@@ -136,7 +163,7 @@ module.exports = (robot) ->
       file_name = "/media/pen/kamerdyner/#{tag}.mp3"
       msg.reply "Ich arbeite..."
 
-      cmd = "/home/pi/hubot/scripts/download-and-cut.sh '#{url}' #{tag} #{formatTime(0,msg.match[6], msg.match[7])} #{formatTime(0,msg.match[9], msg.match[10])}"
+      cmd = "#{process.cwd()}/scripts/download-and-cut.sh '#{url}' #{tag} #{formatTime(0,msg.match[6], msg.match[7])} #{formatTime(0,msg.match[9], msg.match[10])}"
       exec cmd, (error, stdout, stderr) ->
         if (stderr?) && (error?) && (stderr)
           msg.reply "Was für’n Scheiß! #{stderr}"
