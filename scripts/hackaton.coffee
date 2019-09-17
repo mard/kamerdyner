@@ -87,6 +87,15 @@ module.exports = (robot) ->
     else
       msg.reply "Nicht verstanden. Wie brauchst du deine Lautstärke?"
 
+  robot.hear /^Franz update-ytdl$/, (msg) ->
+    msg.reply "Ich arbeite..."
+    cmd = "pip install --upgrade youtube-dl"
+    exec cmd, (error, stdout, stderr) ->
+      if (stderr?) && (error?) && (stderr)
+        msg.reply "Was für’n Scheiß! #{stderr}"
+        return
+      msg.reply "Erfolg! #{stdout}"
+
   robot.hear /^Franz (sing|singen) (\w+)/, (msg) ->
     # group 2 - tag
     tag = "#{msg.match[2].toString().toLowerCase()}"
@@ -118,6 +127,7 @@ module.exports = (robot) ->
      "Franz sing|singen franztag - responds with a link to mp3 file associated with the tag to listen it via browser (works only if clopduino and client are in the same network)\n" +
      "Franz logs|log - shows log of the last processed tag (for troubleshooting)\n" +
      "Franz ip|adres|address|addresses - shows list of all network intefaces\n" +
+     "Franz update-ytdl - performs an update of youtube-dl pip package\n" +
      "Franz hilfe|help|? - shows this help\n"
     msg.reply help
 
