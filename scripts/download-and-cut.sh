@@ -106,6 +106,10 @@ else
   if [ "$#" -eq 4 ]; then
     cutMP3 "$fileName" "$3" "$4"
   fi
+  if [ -x "$(command -v ffmpeg-normalize)" ]; then
+    ffmpeg-normalize "$tmpDir/$fileName" -o "$tmpDir/$fileName" \
+    -nt ebu --dual-mono -c:a libmp3lame -fv >> $logFile 2>&1
+  fi
   echo mv "$tmpDir/$fileName" "$defaultLibraryDir/$fileName" >> $logFile 2>&1
   mv "$tmpDir/$fileName" "$defaultLibraryDir/$fileName"
   timeToLog
