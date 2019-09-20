@@ -15,7 +15,7 @@ set -e
 #Directory where downloaded mp3 files are stored - kamerdyner's library
 defaultLibraryDir='/media/pen/kamerdyner'
 #Temp dir where downloading and encoding happens
-tmpDir='/media/pen/kamerdyner/tmp'
+tmpDir='/tmp/kamerdyner'
 #Log file:
 logFile="$tmpDir/YTlog.txt"
 
