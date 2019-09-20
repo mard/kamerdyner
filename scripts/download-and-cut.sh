@@ -50,7 +50,7 @@ function downloadYoutube {
   # usage: downloadYoutube "url" "tag"
   outputTemplate="%(id)s.%(ext)s"
   #checkIfPackageInstalled "youtube-dl" ## &>> $logFile
-  parameters="--extract-audio --audio-format mp3"
+  parameters="--format bestaudio/best --extract-audio --audio-format mp3"
 
   outputFileName=`youtube-dl --get-filename $parameters -o "$outputTemplate" "$1"`
   outputName=`echo "$outputFileName" | cut -d'.' -f1`
