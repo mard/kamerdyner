@@ -71,14 +71,7 @@ function downloadYoutube {
 
 function cutMP3 {
   nameToLog "cutMP3"
-	if [ -f "$tmpDir/ffmpeg.mp3" ]; then
-		rm "$tmpDir/ffmpeg.mp3"
- 	fi
- 	mv "$tmpDir/$1" "$tmpDir/ffmpeg.mp3"
- 	ffmpeg -y -i "$tmpDir/ffmpeg.mp3" -ss $2 -to $3 -c copy "$defaultLibraryDir/$1" >> $logFile 2>&1
- 	if [ -f "$tmpDir/ffmpeg.mp3" ]; then
- 		rm "$tmpDir/ffmpeg.mp3"
- 	fi
+ 	ffmpeg -y -i "$tmpDir/$1" -ss $2 -to $3 "$tmpDir/$1" >> $logFile 2>&1
 }
 
 function sepToLog {
@@ -112,9 +105,8 @@ else
   fileName=`downloadYoutube "$1" "$2"`
   if [ "$#" -eq 4 ]; then
     cutMP3 "$fileName" "$3" "$4"
-  else
-    echo mv "$tmpDir/$fileName" "$defaultLibraryDir/$fileName" >> $logFile 2>&1
-    mv "$tmpDir/$fileName" "$defaultLibraryDir/$fileName"
   fi
+  echo mv "$tmpDir/$fileName" "$defaultLibraryDir/$fileName" >> $logFile 2>&1
+  mv "$tmpDir/$fileName" "$defaultLibraryDir/$fileName"
   timeToLog
 fi
