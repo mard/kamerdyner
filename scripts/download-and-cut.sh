@@ -2,7 +2,8 @@
 # Script used to download audio from Youtube video and extract specified part of it
 # Depends on all possible codecs that Youtube video files depend on including
 # Prerequisites:
-# sudo apt-get install libav-tools libavcodec-extra youtube-dl ffmpeg
+# sudo apt-get install libav-tools libavcodec-extra ffmpeg
+# sudo pip install youtube-dl ffmpeg-normalize
 
 # Sample usage:
 # ./download-and-cut.sh "https://www.youtube.com/watch?v=QuwvJw1mrWY" "BedzieDzialacNIE" "00:00:01" "00:00:04"
