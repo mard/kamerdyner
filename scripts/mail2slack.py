@@ -120,7 +120,7 @@ vendors.add(Vendor('Ślimak', ['slimak', 'Ślimak', 'ślimak'], 'Pan Ślimak'))
 vendors.add(Vendor('Jesz to', ['Jeż.to', 'Jeż', 'jeż.to', 'jeż', 'Jez.to', 'Jez', 'jez.to', 'jez'], 'Jesz to'))
 vendors.add(Vendor('Borówka', ['BORÓWKA', 'BOROWKA', 'borówka', 'borowka'], 'Pan Borówka'))
 vendors.add(Vendor('Pajda', ['Pajda', 'pajda',], 'Pajda'))
-vendors.add(Vendor('Rajskie Smaki', ['Rajskie Smaki', 'Rajskie smaki', 'rajskie smaki', 'rajskie Smaki'], 'Rajskie Smaki'))
+vendors.add(Vendor('Rajskie Smaki', ['Rajskie Smaki', 'Rajskie smaki', 'rajskie smaki', 'rajskie Smaki', 'Rajskich'], 'Rajskie Smaki'))
 vendors.add(Vendor('Green2go', ['Green2go', 'green2go'], 'Grin tu goł'))
 
 class config:
