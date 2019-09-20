@@ -72,7 +72,8 @@ function downloadYoutube {
 
 function cutMP3 {
   nameToLog "cutMP3"
- 	ffmpeg -y -i "$tmpDir/$1" -ss $2 -to $3 "$tmpDir/$1" >> $logFile 2>&1
+  ffmpeg -y -i "$tmpDir/$1" -ss $2 -to $3 "$tmpDir/$1.new.mp3" >> $logFile 2>&1
+  mv -f "$tmpDir/$1.new.mp3" "$tmpDir/$1"
 }
 
 function sepToLog {
