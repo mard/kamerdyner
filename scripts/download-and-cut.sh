@@ -109,6 +109,7 @@ else
     cutMP3 "$fileName" "$3" "$4"
   fi
   if [ -x "$(command -v ffmpeg-normalize)" ]; then
+    nameToLog "ffmpeg-normalize"
     ffmpeg-normalize "$tmpDir/$fileName" -o "$tmpDir/$fileName" \
     -nt ebu --dual-mono -c:a libmp3lame -fv >> $logFile 2>&1
   fi
