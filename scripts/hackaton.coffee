@@ -203,7 +203,7 @@ module.exports = (robot) ->
       msg.reply no_hasztag_msg
 
   robot.hear /^Franz log[s]?$/, (msg) ->
-    logFile = "/media/pen/kamerdyner/tmp/YTlog.txt"
+    logFile = "/tmp/kamerdyner/YTlog.txt"
     fs.readFile logFile, (err, data) ->
       if err
         msg.reply "Couldn't reach to file #{logFile} ERROR: #{err}"
