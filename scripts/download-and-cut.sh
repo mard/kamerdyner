@@ -63,7 +63,7 @@ function downloadYoutube {
         cat $logFile >&2
         exit 1
     fi
-    mv "$firstOutputFileName" "$realOutputFileName"  >> $logFile 2>&1
+    mv -- "$firstOutputFileName" "$realOutputFileName"  >> $logFile 2>&1
   popd >> $logFile 2>&1
 
   echo "$realOutputFileName"
