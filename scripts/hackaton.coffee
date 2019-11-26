@@ -62,7 +62,7 @@ module.exports = (robot) ->
       return msg.reply no_hasztag_msg
 
   robot.hear /^Franz (stop|halt)$/, (msg) ->
-    exec "killall mplayer"
+    exec "killall mplayer; killall mpv"
 
   robot.error (err, res) ->
     robot.logger.error "#{err}\n#{err.stack}"
@@ -116,6 +116,7 @@ module.exports = (robot) ->
   robot.hear /^Franz (hilfe|help|\?)$/, (msg) ->
     help = "List of all commands:\n" +
      "#tagname - plays file associated with tagname\n" +
+     "Franz play|spiel https://www.youtube.com/watch?v=I583TE-3Grw - plays a clip\n" +
      "Franz vol|volume|lautstarke X% - set playback volume in 0%-100% range (aliases: max|maximum|min|minimum|mute|off)\n" +
      "Franz stop|halt - terminates current playback\n" +
      "Franz remember all https://www.youtube.com/watch?v=I583TE-3Grw as franztag - saves whole audio track from the provided youtube video under tag 'franztag'\n" +
@@ -158,6 +159,15 @@ module.exports = (robot) ->
       file_name = "/media/pen/kamerdyner/#{tag}.mp3"
       robot.brain.set "Franz.tags.#{tag}", file_name
       msg.reply "Sehr gut her obersturmbannfuhrer! #{tag}"
+
+  robot.hear /^Franz (play|spiel) (https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*))/, (msg) ->
+    msg.reply "Bitte warten..."
+    url = msg.match[2].toString()
+    exec "mpv --really-quiet --vo=null --volume=70 --ytdl --ytdl-format=18/bestaudio '#{url}'", (error, stdout, stderr) ->
+      if (stderr?) && (error?) && (stderr)
+        msg.reply "Was für’n Scheiß! #{stderr}"
+        return
+    return msg.send stdout
 
   robot.hear /^Franz remember (https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)) as (\w+) between (([0-5]?\d):([0-5]\d)) and (([0-5]?\d):([0-5]\d))/, (msg) ->
     # group 1 - url
