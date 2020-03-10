@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import sys
@@ -55,7 +55,7 @@ class Kamerdyner:
     def __init__(self, config, vendors):
         self.vendors = vendors
         self.config = config
-        print 'Started'
+        print ('Started')
 
     def decodeMailHeader(self, value):
         dh = email.header.decode_header(value)
@@ -64,7 +64,7 @@ class Kamerdyner:
     def post(self, url, jsonObject):
         post = requests.post(url, data = jsonObject)
         if not post.ok:
-            print 'Post to slack failed: ', post.content
+            print ('Post to slack failed: ', post.content)
             return True
         else:
             return False
@@ -76,7 +76,7 @@ class Kamerdyner:
         time.sleep(4)
         slackMessage = json.dumps({ 'text': say, 'username': userName })
         self.post(config.PAPUGA_SLACK_WEBHOOK_URL, slackMessage)
-        print '\t\tPosting to Slack {}'.format(slackMessage)
+        print ('\t\tPosting to Slack {}'.format(slackMessage))
 
     def processEmails(self):
         try:
@@ -85,7 +85,7 @@ class Kamerdyner:
             try:
                 (retcode, capabilities) = conn.login(self.config.IMAP_USER, self.config.IMAP_PASSWORD)
             except:
-                print 'It''s fucked: ', sys.exc_info()[1]
+                print ('It''s fucked: ', sys.exc_info()[1])
                 sys.exit(1)
 
             conn.select(readonly=0) # Select inbox or default namespace
@@ -93,22 +93,22 @@ class Kamerdyner:
             if retcode == 'OK':
                 msgs = messages[0].split()
                 if(self.lastUnreadCount != len(msgs)):
-                    print 'Unread count: {}'.format(len(msgs))
+                    print ('Unread count: {}'.format(len(msgs)))
                     self.lastUnreadCount = len(msgs)
                 for num in msgs:
-                    print '\tmessage: {}'.format(num)
+                    print ('\tmessage: {}'.format(num))
                     typ, data = conn.fetch(num, '(RFC822)')
                     msg = email.message_from_string(data[0][1])
                     subject = self.decodeMailHeader(msg['Subject'])
-                    print '\t\tDate: {}, Subject {}'.format(msg['Date'], subject)
+                    print ('\t\tDate: {}, Subject {}'.format(msg['Date'], subject))
                     for found in self.vendors.findByKeyword(subject):
-                        print '\t\tIdentified: {}'.format(found.name)
+                        print ('\t\tIdentified: {}'.format(found.name))
                         self.postToSlack(found.say)
                         # flag as seen
                         typ, data = conn.store(num,'+FLAGS','\\SEEN')
             conn.close()
         except:
-            print 'Something fucked :/', sys.exc_info()[1]
+            print ('Something fucked :/', sys.exc_info()[1])
 
 vendors = FoodVendors()
 vendors.add(Vendor('Smakosz', ['smakosz'], 'Bar smakosz'))
