@@ -71,9 +71,9 @@ class Kamerdyner:
 
     def postToSlack(self, say):
         userName = 'von Nogay'
-        slackMessage = json.dumps({ 'text': '#omnomnom', 'username': userName })
+        slackMessage = json.dumps({ 'text': '#gryz', 'username': userName })
         self.post(config.HACKATON_SLACK_WEBHOOK_URL, slackMessage)
-        time.sleep(4)
+        time.sleep(0.5)
         slackMessage = json.dumps({ 'text': say, 'username': userName })
         self.post(config.PAPUGA_SLACK_WEBHOOK_URL, slackMessage)
         print ('\t\tPosting to Slack {}'.format(slackMessage))
